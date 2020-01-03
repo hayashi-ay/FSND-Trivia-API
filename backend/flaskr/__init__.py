@@ -55,7 +55,7 @@ def create_app(test_config=None):
       'current_category': None
     })
 
-  @app.route('/questions/<question_id>', methods=['DELETE'])
+  @app.route('/questions/<int:question_id>', methods=['DELETE'])
   def delete_questions(question_id):
     question = Question.query.filter_by(id=question_id).one_or_none()
 
@@ -145,5 +145,3 @@ def create_app(test_config=None):
     }), error.code
   
   return app
-
-    
