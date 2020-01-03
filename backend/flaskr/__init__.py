@@ -64,16 +64,25 @@ def create_app(test_config=None):
   This removal will persist in the database and when you refresh the page. 
   '''
 
-  '''
-  @TODO: 
-  Create an endpoint to POST a new question, 
-  which will require the question and answer text, 
-  category, and difficulty score.
-
-  TEST: When you submit a question on the "Add" tab, 
-  the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
-  '''
+  @app.route('/questions', methods=['POST'])
+  def create_questions():
+    error = False
+    try:
+      body = request.get_json()
+      question = Question( body['question'], body['answer'], body['difficulty'], body['category'] )
+      question.insert()
+    except:
+      error = True
+      rollback_db()
+      print( sys.exc_info() )
+    finally:
+      close_db()
+      if error:
+        abort(500)
+      else:
+        return jsonify({
+          'message': 'Created'
+        }), 201
 
   '''
   @TODO: 

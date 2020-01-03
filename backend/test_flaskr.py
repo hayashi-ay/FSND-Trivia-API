@@ -51,6 +51,27 @@ class TriviaTestCase(unittest.TestCase):
 
       self.assertEqual(res.status_code, 404)
 
+    def test_create_questions(self):
+      new_question = {
+        'question': 'new question',
+        'answer': 'new answer',
+        'category': 1,
+        'difficulty': 1,
+      }
+      res = self.client().post('/questions', json=new_question)
+      self.assertEqual(res.status_code, 201)
+
+    def test_500_create_questions(self):
+      invalid_question = {
+        'question': 'invalid question',
+        'answer': 'invalid answer',
+        'category': 'Not integer',
+        'difficulty': 'Not integer',
+      }
+      res = self.client().post('/questions', json=invalid_question)
+
+      self.assertEqual(res.status_code, 500)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
