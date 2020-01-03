@@ -24,7 +24,10 @@ def create_app(test_config=None):
   @app.route('/categories')
   def categories():
     data = Category.query.all()
-    categories = list( map( lambda x: x.format(), data ) )
+
+    categories = {}
+    for category in data:
+      categories[category.id] = category.type
 
     return jsonify({
       'categories': categories
