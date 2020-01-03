@@ -41,9 +41,9 @@ class TriviaTestCase(unittest.TestCase):
       data = json.loads(res.data)
 
       self.assertEqual(res.status_code, 200)
-      self.assertEqual(data['currentCategory'], None)
+      self.assertEqual(data['current_category'], None)
       self.assertTrue(len(data['questions']))
-      self.assertTrue(data['totalQuestions'])
+      self.assertTrue(data['total_questions'])
       self.assertTrue(data['categories'])
 
     def test_404_get_questions(self):
