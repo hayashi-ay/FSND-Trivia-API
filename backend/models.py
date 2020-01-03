@@ -19,6 +19,12 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
+def rollback_db():
+  db.session.rollback()
+
+def close_db():
+  db.session.close()
+
 '''
 Question
 
