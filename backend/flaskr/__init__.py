@@ -109,10 +109,11 @@ def create_app(test_config=None):
   '''
 
   @app.errorhandler(404)
-  def not_found(error):
+  @app.errorhandler(500)
+  def error_handler(error):
     return jsonify({
-      'message': 'resource not found'
-    }), 404
+      'message': error.description
+    }), error.code
   
   return app
 
