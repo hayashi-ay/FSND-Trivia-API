@@ -3,8 +3,8 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
-
-from models import setup_db, Question, Category
+import sys
+from models import setup_db, rollback_db, close_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
