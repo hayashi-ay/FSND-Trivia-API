@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import and_
 import random
 import sys
 from models import setup_db, rollback_db, close_db, Question, Category
@@ -34,10 +35,17 @@ def create_app(test_config=None):
 
   @app.route('/questions')
   def questions():
+    # pagination
     page = request.args.get('page', 1, type=int)
     offset = QUESTIONS_PER_PAGE * ( page - 1 )
 
-    data = Question.query.order_by(Question.id).limit(QUESTIONS_PER_PAGE).offset(offset)
+    # dynamically constructing filters
+    filters = []
+    category_id = request.args.get('category_id', None, type=int)
+    if category_id:
+      filters.append( Question.category == category_id )
+
+    data = Question.query.filter(and_(*filters)).order_by(Question.id).limit(QUESTIONS_PER_PAGE).offset(offset)
     questions = list( map( lambda x: x.format(), data ) )
 
     data = Category.query.order_by(Category.id).all()
@@ -50,9 +58,9 @@ def create_app(test_config=None):
 
     return jsonify({
       'questions': questions,
-      'total_questions': Question.query.count(),
+      'total_questions': Question.query.filter(and_(*filters)).count(),
       'categories': categories,
-      'current_category': None
+      'current_category': category_id
     })
 
   @app.route('/questions/<int:question_id>', methods=['DELETE'])
@@ -108,21 +116,6 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-
-  @app.route('/categories/<int:category_id>/questions')
-  def questions_by_category(category_id):
-    data = Question.query.filter_by(category=category_id).order_by(Question.id)
-    questions = list( map( lambda x: x.format(), data ) )
-
-    if len(questions) == 0:
-      abort(404)
-
-    return jsonify({
-      'questions': questions,
-      'total_questions': Question.query.filter_by(category=category_id).count(),
-      'current_category': category_id
-    })
-
 
   '''
   @TODO: 
