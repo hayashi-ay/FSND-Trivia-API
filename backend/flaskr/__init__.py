@@ -21,18 +21,6 @@ def create_app(test_config=None):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
     return response
 
-  @app.route('/categories')
-  def categories():
-    data = Category.query.all()
-
-    categories = {}
-    for category in data:
-      categories[category.id] = category.type
-
-    return jsonify({
-      'categories': categories
-    })
-
   @app.route('/questions')
   def questions():
     # pagination
@@ -108,6 +96,18 @@ def create_app(test_config=None):
         return jsonify({
           'message': 'Created'
         }), 201
+
+  @app.route('/categories')
+  def categories():
+    data = Category.query.all()
+
+    categories = {}
+    for category in data:
+      categories[category.id] = category.type
+
+    return jsonify({
+      'categories': categories
+    })
 
   @app.route('/quizzes', methods=['POST'])
   def quizzes():

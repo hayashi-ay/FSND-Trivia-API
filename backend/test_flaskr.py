@@ -29,13 +29,6 @@ class TriviaTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-    def test_get_categories(self):
-      res = self.client().get('/categories')
-      data = json.loads(res.data)
-
-      self.assertEqual(res.status_code, 200)
-      self.assertTrue(len(data['categories']))
-
     def test_get_questions(self):
       res = self.client().get('/questions?page=1')
       data = json.loads(res.data)
@@ -76,6 +69,16 @@ class TriviaTestCase(unittest.TestCase):
       self.assertTrue(data['total_questions'])
       self.assertTrue(data['categories'])
 
+    def test_delete_questions(self):
+      res = self.client().delete('/questions/20')
+
+      self.assertEqual(res.status_code, 200)
+
+    def test_422_delete_questions(self):
+      res = self.client().delete('/questions/1000')
+
+      self.assertEqual(res.status_code, 422)
+
     def test_create_questions(self):
       new_question = {
         'question': 'new question',
@@ -97,15 +100,12 @@ class TriviaTestCase(unittest.TestCase):
 
       self.assertEqual(res.status_code, 500)
 
-    def test_delete_questions(self):
-      res = self.client().delete('/questions/20')
+    def test_get_categories(self):
+      res = self.client().get('/categories')
+      data = json.loads(res.data)
 
       self.assertEqual(res.status_code, 200)
-
-    def test_422_delete_questions(self):
-      res = self.client().delete('/questions/1000')
-
-      self.assertEqual(res.status_code, 422)
+      self.assertTrue(len(data['categories']))
 
     def test_quizzes(self):
       body = {
