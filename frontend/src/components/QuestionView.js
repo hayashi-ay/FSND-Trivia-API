@@ -24,6 +24,9 @@ class QuestionView extends Component {
   getQuestions = () => {
     const params = {};
     params.page = this.state.page;
+    if ( this.state.currentCategory ) {
+      params.category_id = this.state.currentCategory;
+    }
 
     $.ajax({
       url: '/questions',
@@ -62,22 +65,12 @@ class QuestionView extends Component {
     return pageNumbers;
   }
 
-  getByCategory= (id) => {
-    $.ajax({
-      url: `/categories/${id}/questions`, //TODO: update request URL
-      type: "GET",
-      success: (result) => {
-        this.setState({
-          questions: result.questions,
-          totalQuestions: result.total_questions,
-          currentCategory: result.current_category })
-        return;
-      },
-      error: (error) => {
-        alert('Unable to load questions. Please try your request again')
-        return;
-      }
-    })
+  getByCategory = (category_id) => {
+    const state = {
+      page: 1,
+      currentCategory: category_id
+    }
+    this.setState(state, () => this.getQuestions());
   }
 
   submitSearch = (searchTerm) => {
@@ -127,7 +120,7 @@ class QuestionView extends Component {
     return (
       <div className="question-view">
         <div className="categories-list">
-          <h2 onClick={() => {this.getQuestions()}}>Categories</h2>
+          <h2 onClick={() => {this.getByCategory(null)}}>Categories</h2>
           <ul>
             {Object.keys(this.state.categories).map((id, ) => (
               <li key={id} onClick={() => {this.getByCategory(id)}}>
