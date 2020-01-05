@@ -66,6 +66,16 @@ class TriviaTestCase(unittest.TestCase):
 
       self.assertEqual(res.status_code, 404)
 
+    def test_get_questions_by_search_term(self):
+      res = self.client().get('/questions?page=1&search_term=movie')
+      data = json.loads(res.data)
+
+      self.assertEqual(res.status_code, 200)
+      self.assertEqual(data['current_category'], None)
+      self.assertTrue(len(data['questions']))
+      self.assertTrue(data['total_questions'])
+      self.assertTrue(data['categories'])
+
     def test_create_questions(self):
       new_question = {
         'question': 'new question',
