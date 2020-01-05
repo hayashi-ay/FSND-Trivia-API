@@ -14,6 +14,7 @@ class QuestionView extends Component {
       totalQuestions: 0,
       categories: {},
       currentCategory: null,
+      searchTerm: {},
     }
   }
 
@@ -26,6 +27,9 @@ class QuestionView extends Component {
     params.page = this.state.page;
     if ( this.state.currentCategory ) {
       params.category_id = this.state.currentCategory;
+    }
+    if ( this.state.searchTerm ) {
+      params.search_term = this.state.searchTerm;
     }
 
     $.ajax({
@@ -68,34 +72,19 @@ class QuestionView extends Component {
   getByCategory = (category_id) => {
     const state = {
       page: 1,
-      currentCategory: category_id
+      currentCategory: category_id,
+      searchTerm: null
     }
     this.setState(state, () => this.getQuestions());
   }
 
   submitSearch = (searchTerm) => {
-    $.ajax({
-      url: `/questions`, //TODO: update request URL
-      type: "POST",
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify({searchTerm: searchTerm}),
-      xhrFields: {
-        withCredentials: true
-      },
-      crossDomain: true,
-      success: (result) => {
-        this.setState({
-          questions: result.questions,
-          totalQuestions: result.total_questions,
-          currentCategory: result.current_category })
-        return;
-      },
-      error: (error) => {
-        alert('Unable to load questions. Please try your request again')
-        return;
-      }
-    })
+    const state = {
+      page: 1,
+      currentCategory: null,
+      searchTerm: searchTerm
+    }
+    this.setState(state, () => this.getQuestions());
   }
 
   questionAction = (id) => (action) => {
