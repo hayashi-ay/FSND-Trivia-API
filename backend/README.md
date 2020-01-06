@@ -77,6 +77,98 @@ The API will return three error when requests fail.
 | page | int | Optional | Page Number. Default is 1. |
 | category_id | int | Optional | If not provided, questions of all categories are returned. |
 | search_term | string | Optional | Search Term (e.g. "movie", "medicine"). |
+
+<details><summary>Sample Response</summary>
+
+```
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "current_category": null,
+    "questions": [
+        {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+        },
+        {
+            "answer": "Tom Cruise",
+            "category": 5,
+            "difficulty": 4,
+            "id": 4,
+            "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+        },
+        {
+            "answer": "Edward Scissorhands",
+            "category": 5,
+            "difficulty": 3,
+            "id": 6,
+            "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+        },
+        {
+            "answer": "Muhammad Ali",
+            "category": 4,
+            "difficulty": 1,
+            "id": 9,
+            "question": "What boxer's original name is Cassius Clay?"
+        },
+        {
+            "answer": "Brazil",
+            "category": 6,
+            "difficulty": 3,
+            "id": 10,
+            "question": "Which is the only team to play in every soccer World Cup tournament?"
+        },
+        {
+            "answer": "Uruguay",
+            "category": 6,
+            "difficulty": 4,
+            "id": 11,
+            "question": "Which country won the first ever soccer World Cup in 1930?"
+        },
+        {
+            "answer": "George Washington Carver",
+            "category": 4,
+            "difficulty": 2,
+            "id": 12,
+            "question": "Who invented Peanut Butter?"
+        },
+        {
+            "answer": "Lake Victoria",
+            "category": 3,
+            "difficulty": 2,
+            "id": 13,
+            "question": "What is the largest lake in Africa?"
+        },
+        {
+            "answer": "The Palace of Versailles",
+            "category": 3,
+            "difficulty": 3,
+            "id": 14,
+            "question": "In which royal palace would you find the Hall of Mirrors?"
+        },
+        {
+            "answer": "Agra",
+            "category": 3,
+            "difficulty": 2,
+            "id": 15,
+            "question": "The Taj Mahal is located in which Indian city?"
+        }
+    ],
+    "total_questions": 21
+}
+```
+  
+</details>
+
 #### POST /questions
  - create a new question
 
@@ -86,10 +178,50 @@ The API will return three error when requests fail.
 | answer | string | Required | The answer of a question. |
 | difficulty | int | Required | The difficulty of a question. |
 | category | int | Required | The category ID of a question. |
+
+<details><summary>Sample Response</summary>
+
+```
+{
+    "message": "Created"
+}
+```
+  
+</details>
+
 #### DELETE /questions/{question_id}
  - delete question using a question ID
+
+<details><summary>Sample Response</summary>
+
+```
+{
+    "message": "Deleted"
+}
+```
+  
+</details>
+
 #### GET /categories
  - get all categories
+
+<details><summary>Sample Response</summary>
+
+```
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    }
+}
+```
+  
+</details>
+
 #### POST /quizzes
  - get questions to play the quiz
  - questions are randomly returned
@@ -99,8 +231,21 @@ The API will return three error when requests fail.
 | previous_questions | list(int) | Required | List of previous question IDs. |
 | category_id | id | Optional | If not provided, questions are returned from  all categories. |
 
+<details><summary>Sample Response</summary>
 
-
+```
+{
+    "question": {
+        "answer": "Edward Scissorhands",
+        "category": 5,
+        "difficulty": 3,
+        "id": 6,
+        "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }
+}
+```
+  
+</details>
 
 ## Testing
 To run the tests, run
